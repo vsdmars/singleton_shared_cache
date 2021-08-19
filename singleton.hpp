@@ -6,30 +6,33 @@
 namespace sentinel {
 
 enum class CACHE_VALUE_TYPE {
-    TIME_ENTITY_LOOKUP_INFO,
-}
+  TIME_ENTITY_LOOKUP_INFO,
+};
 
-template<CACHE_VALUE_TYPE E = TIME_ENTITY_LOOKUP_INFO>
+template <CACHE_VALUE_TYPE E = CACHE_VALUE_TYPE::TIME_ENTITY_LOOKUP_INFO>
 struct CacheValue {
-    int64_t expiryTs;
-    int denialInfoCode;
-    int routingPrefixSize;
-    bool requiresGoodBotUserAgent;
+  int64_t expiryTs;
+  int denialInfoCode;
+  int routingPrefixSize;
+  bool requiresGoodBotUserAgent;
 
-    CacheValue() = default;
-    CacheValue(int64_t ts, int infoCode = 0, int prefixSize = 32, bool requiresGoodUserAgent = false) :
-    expiryTs(ts),
-    denialInfoCode(infoCode),
-    routingPrefixSize(prefixSize),
-    requiresGoodBotUserAgent(requiresGoodUserAgent) { };
+  CacheValue() = default;
+  CacheValue(int64_t ts, int infoCode = 0, int prefixSize = 32,
+             bool requiresGoodUserAgent = false)
+      : expiryTs(ts), denialInfoCode(infoCode), routingPrefixSize(prefixSize),
+        requiresGoodBotUserAgent(requiresGoodUserAgent){};
 };
 
 using SoftIpCache = LRUC::ScalableLRUCache<int, CacheValue<>>;
 
 } // namespace sentinel
 
-SoftIpCache* GetSoftIpCache();
+template <typename T = void> sentinel::SoftIpCache *GetSoftIpCache() {
+  static sentinel::SoftIpCache cache{7, 4};
+
+  return &cache;
+}
 
 extern "C" {
-    void* GetSoftIpCache();
+void *GetSoftIpCache();
 }
