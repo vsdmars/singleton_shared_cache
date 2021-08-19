@@ -7,7 +7,12 @@ clang++ -std=c++17 -fPIC -c share2.cpp
 clang++ -std=c++17 -shared share1.o -L. -lsingleton -o libshare1.so
 clang++ -std=c++17 -shared share2.o -L. -lsingleton -o libshare2.so
 
-clang++ -std=c++17 main.cpp -L. -lshare1 -lshare2
+clang++ -std=c++17 main.cpp -L. -lshare1 -lshare2 -lsingleton -ltbb
 
 ----
-singleton OK!
+Output:
+share1: fun address: 0x7fb106fcd5d0
+share2: slruc key 1 found
+share2: fun address: 0x7fb106fcd5d0
+share1: slruc key 2 found
+----
