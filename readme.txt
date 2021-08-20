@@ -1,13 +1,13 @@
-clang++ -std=c++17 -fPIC -c singleton.cpp
-clang++ -std=c++17 -shared singleton.o  -o libsingleton.so
+# clang++ -std=c++17 -fPIC -c singleton.cpp
+# clang++ -std=c++17 -shared singleton.o  -o libsingleton.so
 
 clang++ -std=c++17 -fPIC -c share1.cpp
 clang++ -std=c++17 -fPIC -c share2.cpp
 
-clang++ -std=c++17 -shared share1.o -L. -lsingleton -o libshare1.so
-clang++ -std=c++17 -shared share2.o -L. -lsingleton -o libshare2.so
+clang++ -std=c++17 -shared share1.o -o libshare1.so
+clang++ -std=c++17 -shared share2.o -o libshare2.so
 
-clang++ -std=c++17 main.cpp -L. -lshare1 -lshare2 -lsingleton -ltbb
+clang++ -std=c++17 main.cpp -L. -lshare1 -lshare2 -ltbb
 
 ----
 Output:
