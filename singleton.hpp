@@ -2,6 +2,7 @@
 
 #include "lrucache.h"
 #include "scale-lrucache.h"
+#include <mutex>
 
 namespace sentinel {
 
@@ -27,9 +28,5 @@ using SoftIpCache = LRUC::ScalableLRUCache<int, CacheValue<>>;
 
 } // namespace sentinel
 
-template <size_t capacity, size_t shardCount>
-sentinel::SoftIpCache *GetSoftIpCache() {
-  static sentinel::SoftIpCache cache{capacity, shardCount};
-
-  return &cache;
-}
+void init_soft_ip_cache(size_t capacity, size_t shardCnt);
+sentinel::SoftIpCache &getSoftIpCache();

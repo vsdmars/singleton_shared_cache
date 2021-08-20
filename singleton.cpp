@@ -1,17 +1,21 @@
 #include "singleton.hpp"
 
-sentinel::SoftIpCache *GetSoftIpCache(size_t capacity, size_t shardCount) {
-  static auto cache = [=]() {
-    static sentinel::SoftIpCache cache{capacity, shardCount};
+namespace {
+std::once_flag init_soft_ip_flag;
+size_t soft_ip_cache_capacity;
+size_t soft_ip_cache_shardCount;
+} // namespace
 
-    return &cache;
-  };
-
-  return cache();
+void init_soft_ip_cache(size_t capacity, size_t shardCnt) {
+  std::call_once(init_soft_ip_flag, [=] {
+    soft_ip_cache_capacity = capacity;
+    soft_ip_cache_shardCount = shardCnt;
+  });
 }
 
-void *GetSoftIpCache() {
-  static sentinel::SoftIpCache cache{7, 4};
+sentinel::SoftIpCache &getSoftIpCache() {
+  static sentinel::SoftIpCache cache{soft_ip_cache_capacity,
+                                     soft_ip_cache_shardCount};
 
-  return &cache;
+  return cache;
 }
