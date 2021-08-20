@@ -5,8 +5,9 @@
 using namespace std;
 
 int main() {
-  run1();
-  check2();
   run2();
   check1();
+
+  run1();
+  check2();
 }

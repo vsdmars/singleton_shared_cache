@@ -27,12 +27,9 @@ using SoftIpCache = LRUC::ScalableLRUCache<int, CacheValue<>>;
 
 } // namespace sentinel
 
-template <typename T = void> sentinel::SoftIpCache *GetSoftIpCache() {
-  static sentinel::SoftIpCache cache{7, 4};
+template <size_t capacity, size_t shardCount>
+sentinel::SoftIpCache *GetSoftIpCache() {
+  static sentinel::SoftIpCache cache{capacity, shardCount};
 
   return &cache;
-}
-
-extern "C" {
-void *GetSoftIpCache();
 }

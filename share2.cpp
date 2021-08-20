@@ -4,15 +4,16 @@
 using namespace std;
 
 void run2() {
-  auto slruc = GetSoftIpCache<>();
+  auto slruc = GetSoftIpCache<7, 4>();
   cout << "share2: fun address: " << slruc << endl;
+  cout << "share2 capacity: " << slruc->capacity() << endl;
 
   // test ScalableLRUCache
   slruc->insert(2, 22);
 }
 
 void check2() {
-  auto slruc = GetSoftIpCache<>();
+  auto slruc = GetSoftIpCache<7, 4>();
 
   sentinel::SoftIpCache::ConstAccessor sca;
   if (!slruc->find(sca, 1)) {
